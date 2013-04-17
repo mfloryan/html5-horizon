@@ -10,24 +10,26 @@ context.stroke();
 
 var coordinates = [];
 
+var vanishingPoint = {x: canvas.width / 2, y: 20 };
+
 var numOfLines = 10;
+var numOfRows = 20;
 
 coordinates[0] = [];
+
 for (var i = 0; i < numOfLines; i++) {
     var x = (canvas.width / (numOfLines - 1)) * i;
     coordinates[0][i] = {x:x};
     context.moveTo(x, canvas.height);
-    context.lineTo(canvas.width/2, 20);
+    context.lineTo(vanishingPoint.x, vanishingPoint.y);
 }
 context.stroke();
-
-var numOfRows = 20;
 
 context.beginPath();
 context.strokeStyle = "#888";
 
 for (var i = 0; i < numOfRows; i++) {
-    var y = canvas.height - ((canvas.height - 20) / numOfRows) * Math.log((i/2) +1) * 8.5;
+    var y = canvas.height - ((canvas.height - vanishingPoint.y) / numOfRows) * Math.log((i/2) +1) * 8.5;
 
     if (!coordinates[i]) coordinates[i] = [];
     for (var j = 0; j < numOfLines; j++) {
@@ -49,13 +51,3 @@ for (var i = 0; i < numOfRows; i++) {
 //zakolorowane kwadraty
 
 context.stroke();
-
-
-
-//context.beginPath();
-//context.moveTo(40,40);
-//context.lineTo(50,50);
-//context.lineTo(50,80);
-//context.lineTo(40,80);
-//context.lineTo(40,40);
-//context.fill();

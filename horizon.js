@@ -1,6 +1,7 @@
 var HorizonVisualisation = function (canvasElement) {
 
     var canvas = canvasElement;
+    var context = canvas.getContext("2d");
 
     var vanishingPoint = {x: canvas.width / 2, y: 20.5 };
 
@@ -30,7 +31,7 @@ var HorizonVisualisation = function (canvasElement) {
         }
     }
 
-    var drawGrid = function(context) {
+    var drawGrid = function() {
         context.moveTo(0, vanishingPoint.y);
         context.lineTo(canvas.width, vanishingPoint.y);
 
@@ -55,8 +56,30 @@ var HorizonVisualisation = function (canvasElement) {
         context.stroke();
     }
 
+    function drawSquare(col, row) {
+        var points = [
+            {x:grid[row+1][col].x,y:grid[row+1][col].y},
+            {x:grid[row+1][col+1].x,y:grid[row+1][col+1].y},
+            {x:grid[row][col+1].x,y:grid[row][col+1].y},
+            {x:grid[row][col].x,y:grid[row][col].y}
+        ];
+
+        context.beginPath();
+        context.fillStyle = "#A6E";
+
+        context.moveTo(points[0].x, points[0].y);
+
+        for (var i = 1; i < points.length; i++) {
+            context.lineTo(points[i].x, points[i].y);
+        }
+        context.lineTo(points[0].x, points[0].y);
+
+        context.fill();
+    }
+
     var start = function() {
-        drawGrid(canvas.getContext("2d"));
+        drawGrid();
+        drawSquare(8, 8);
     };
 
     return {start: start};

@@ -1,6 +1,6 @@
 var canvas = document.getElementById("horizonCanvas");
 
-var vanishingPoint = {x: canvas.width / 2, y: 20 };
+var vanishingPoint = {x: canvas.width / 2, y: 20.5 };
 
 var numOfLines = 10;
 var numOfRows = 20;
@@ -22,15 +22,18 @@ for (var row = 0; row < numOfRows; row++) {
         grid[0][col].x = x;
 
         if (col == 0) {
-            grid[row][0].x = (vanishingPoint.x * (canvas.height - y)) / canvas.height;
+            grid[row][col].x = (vanishingPoint.x * (canvas.height - y)) / (canvas.height - vanishingPoint.y);
+        }
+        if (col == (numOfLines - 1)) {
+            grid[row][col].x = canvas.width - grid[row][0].x;
         }
     }
 }
 
 var context = canvas.getContext("2d");
 
-context.moveTo(0, 20.5);
-context.lineTo(canvas.width, 20.5);
+context.moveTo(0, vanishingPoint.y);
+context.lineTo(canvas.width, vanishingPoint.y);
 
 context.strokeStyle = "#000";
 context.stroke();
@@ -38,7 +41,7 @@ context.stroke();
 context.beginPath();
 
 for (var i = 0; i < numOfLines; i++) {
-    context.moveTo(grid[0][i].x, canvas.height);
+    context.moveTo(grid[0][i].x, grid[0][i].y);
     context.lineTo(vanishingPoint.x, vanishingPoint.y);
 }
 context.stroke();
@@ -47,8 +50,7 @@ context.beginPath();
 context.strokeStyle = "#888";
 
 for (var i = 0; i < numOfRows; i++) {
-
-    context.moveTo(i * 21, grid[i][0].y);
-    context.lineTo(canvas.width - (i * 21), grid[i][0].y);
+    context.moveTo(grid[i][0].x, grid[i][0].y);
+    context.lineTo(grid[i][numOfLines-1].x, grid[i][0].y);
 }
 context.stroke();

@@ -1,16 +1,17 @@
 var canvas = document.getElementById("horizonCanvas");
 var context = canvas.getContext("2d");
 
-
-context.moveTo(0,20.5);
-context.lineTo(canvas.width,20.5);
-
-context.strokeStyle = "#000";
-context.stroke();
-
 var coordinates = [];
 
 var vanishingPoint = {x: canvas.width / 2, y: 20 };
+
+
+
+context.moveTo(0, 20.5);
+context.lineTo(canvas.width, 20.5);
+
+context.strokeStyle = "#000";
+context.stroke();
 
 var numOfLines = 10;
 var numOfRows = 20;

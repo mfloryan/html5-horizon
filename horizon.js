@@ -56,7 +56,7 @@ var HorizonVisualisation = function (canvasElement) {
         context.stroke();
     }
 
-    function drawSquare(col, row) {
+    function drawSquare(col, row, fillStyle) {
         var points = [
             {x:grid[row+1][col].x,y:grid[row+1][col].y},
             {x:grid[row+1][col+1].x,y:grid[row+1][col+1].y},
@@ -65,7 +65,8 @@ var HorizonVisualisation = function (canvasElement) {
         ];
 
         context.beginPath();
-        context.fillStyle = "#A6E";
+        context.fillStyle = fillStyle;
+        context.strokeStyle = "#000";
 
         context.moveTo(points[0].x, points[0].y);
 
@@ -77,9 +78,54 @@ var HorizonVisualisation = function (canvasElement) {
         context.fill();
     }
 
+    var Square = function (col) {
+
+        var row = 0;
+        var fillStyle = "rgb("+
+            Math.floor(Math.random() *256) + ","+
+            Math.floor(Math.random() *256) + "," +
+            Math.floor(Math.random() *256) + ")";
+
+        var advance = function() {
+            row++;
+            return row < (numOfRows - 2);
+        };
+
+        var draw = function() {
+            drawSquare(col, row, fillStyle);
+        };
+
+        return {advance: advance, draw: draw};
+    };
+
+    var squares = [];
+
     var start = function() {
+        squares.push(new Square(5));
+        setTimeout(step, 200);
+    };
+
+    var step = function() {
+        context.clearRect(0,0,canvas.width, canvas.height);
         drawGrid();
-        drawSquare(8, 8);
+
+        var newSquares = [];
+
+        for (var i=0; i < squares.length; i++) {
+            squares[i].draw();
+            if (squares[i].advance()) {
+                newSquares.push(squares[i]);
+            }
+        }
+        squares = newSquares;
+
+        var random = Math.floor(Math.random() * numOfLines * 1.5);
+
+        if (random < numOfLines - 1) {
+            squares.push(new Square(random));
+        }
+
+        setTimeout(step, 200);
     };
 
     return {start: start};

@@ -12,20 +12,19 @@ for (var row = 0; row < numOfRows; row++) {
     grid[row] = [];
 
     var y = canvas.height - ((canvas.height - vanishingPoint.y) / numOfRows) * Math.log((row/2) +1) * 8.5;
+    var totalY = canvas.height - vanishingPoint.y;
 
     for (var col = 0; col < numOfLines; col++) {
-        grid[row][col] = {};
+        grid[row][col] = {y: y};
 
-        var x = (canvas.width / (numOfLines - 1)) * col;
-
-        grid[row][col].y = y;
-        grid[0][col].x = x;
-
-        if (col == 0) {
-            grid[row][col].x = (vanishingPoint.x * (canvas.height - y)) / (canvas.height - vanishingPoint.y);
-        }
-        if (col == (numOfLines - 1)) {
-            grid[row][col].x = canvas.width - grid[row][0].x;
+        var firstRow = grid[0][col];
+        if (row == 0) {
+            var x = (canvas.width / (numOfLines - 1)) * col;
+            firstRow.x = x;
+        } else {
+            var dy = firstRow.y - y;
+            var totalX = vanishingPoint.x - firstRow.x;
+            grid[row][col].x = firstRow.x + ((totalX * dy) / (totalY));
         }
     }
 }

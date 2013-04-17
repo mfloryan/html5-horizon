@@ -6,24 +6,23 @@ var numOfLines = 10;
 var numOfRows = 20;
 
 var grid = [];
-grid[0] = [];
 
-for (var i = 0; i < numOfLines; i++) {
-    var x = (canvas.width / (numOfLines - 1)) * i;
-    grid[0][i] = {x:x};
-}
+for (var row = 0; row < numOfRows; row++) {
 
-for (i = 0; i < numOfRows; i++) {
-    var y = canvas.height - ((canvas.height - vanishingPoint.y) / numOfRows) * Math.log((i/2) +1) * 8.5;
+    grid[row] = [];
 
-    if (!grid[i]) grid[i] = [];
-    for (var j = 0; j < numOfLines; j++) {
-        if (!grid[i][j]) grid[i][j] = {y:y};
-        else {
-            grid[i][j].y = y;
-        }
-        if (j == 0) {
-            grid[i][j].x = ((canvas.width/2) * (canvas.height - y)) / canvas.height;
+    var y = canvas.height - ((canvas.height - vanishingPoint.y) / numOfRows) * Math.log((row/2) +1) * 8.5;
+
+    for (var col = 0; col < numOfLines; col++) {
+        grid[row][col] = {};
+
+        var x = (canvas.width / (numOfLines - 1)) * col;
+
+        grid[row][col].y = y;
+        grid[0][col].x = x;
+
+        if (col == 0) {
+            grid[row][0].x = (vanishingPoint.x * (canvas.height - y)) / canvas.height;
         }
     }
 }
